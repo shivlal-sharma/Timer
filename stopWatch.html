@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start Stop Reset Watch</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: url('image/bg2.avif') no-repeat center center/cover;
+        }
+
+        #time {
+            color: #fff;
+            font-size: 2.5rem;
+            padding: 3px 10px;
+            background: #fff;
+            color: #000;
+            border-radius: 5px;
+        }
+
+        .buttons{
+            margin-top: 20px;
+        }
+
+        button{
+            padding: 5px 10px;
+            font-size: 1.1rem;
+            margin-inline: 15px ;
+            border: none;
+            outline: none;
+            border-radius: 3px;
+            background-color: var(--clr);
+            color: #fff;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="time">00 : 00 : 00</div>
+    <div class="buttons">
+        <button style="--clr:green;" id="start">Start</button>
+        <button style="--clr:red;" id="stop">Stop</button>
+        <button style="--clr:blue;" id="reset">Reset</button>
+    </div>
+
+    <script>
+        let time = document.getElementById('time');
+        let start = document.getElementById('start');
+        let stop = document.getElementById('stop');
+        let reset = document.getElementById('reset');
+
+        let msec = 0;
+        let sec = 0;
+        let min = 0;
+
+        let timeid = null;
+
+        const displayTime = ()=>{
+           msec++
+            if(msec==100){
+                msec = 0;
+                sec++;
+                if(sec==60){
+                    sec = 0;
+                    min++;
+                }
+            }
+            
+            let ms = msec < 10 ? '0'+ msec : msec ;
+            let s = sec < 10 ? '0' + sec : sec ;
+            let mi = min < 10 ? '0' + min : min ;
+
+            time.innerText = mi + ' : ' + s + ' : ' + ms ;
+        }
+
+        start.addEventListener('click',()=>{
+            if(timeid !== null){
+                clearInterval(timeid);
+            }
+            timeid = setInterval(displayTime,10);
+        });
+
+        stop.addEventListener('click',()=>{
+            clearInterval(timeid);
+        });
+
+        reset.addEventListener('click',()=>{
+            clearInterval(timeid);
+            time.innerText = '00 : 00 : 00';
+            msec = sec = min = 0;
+        });
+    </script>
+</body>
+
+</html>
